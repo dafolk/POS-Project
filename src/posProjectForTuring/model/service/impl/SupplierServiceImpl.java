@@ -11,12 +11,27 @@ public class SupplierServiceImpl implements SupplierService {
     
     @Override
     public void insertSupplier(Supplier supplier) {
-        productDao.insertSupplier(supplier);
+        this.productDao.insertSupplier(supplier);
     }
 
     @Override
     public List<Supplier> getAllSuppliers() {
         return productDao.getAllSuppliers();
+    }
+
+    @Override
+    public String getSupplierName(int supplierId) {
+        return productDao.getSupplierName(supplierId);
+    }
+
+    @Override
+    public int getSupplierId(String supplierName) {
+        return productDao.getSupplierId(supplierName);
+    }
+
+    @Override
+    public void deleteSupplier(int supplierId) {
+        this.productDao.deleteSupplier(supplierId);
     }
     
 }

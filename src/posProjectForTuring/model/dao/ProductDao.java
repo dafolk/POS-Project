@@ -61,10 +61,93 @@ public class ProductDao {
             st.setString(1, product.getName());
             st.setInt(2, product.getUnitPrice());
             st.setInt(3, product.getSellingPrice());
-            st.setInt(4, product.getCategroy());
+            st.setInt(4, product.getCategory());
             st.setInt(5, product.getSupplier());
             st.setInt(6, product.getStock());
             st.setTimestamp(7, CurrentDateTime.get());
+            
+            st.executeUpdate();
+            st.close();
+        } catch (SQLException ex) {
+            Logger.getLogger(ProductDao.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }
+    
+    public void updateProduct(Product product){
+        try {
+            PreparedStatement st = dao.conn.prepareStatement("UPDATE product "
+                                                            + "SET name = ?, unit_price = ?, selling_price = ?, category = ?, supplier = ?, last_updated = ? "
+                                                            + "WHERE id = ?;");
+            
+            st.setString(1, product.getName());
+            st.setInt(2, product.getUnitPrice());
+            st.setInt(3, product.getSellingPrice());
+            st.setInt(4, product.getCategory());
+            st.setInt(5, product.getSupplier());
+            st.setTimestamp(6, CurrentDateTime.get());
+            st.setInt(7, product.getId());
+            
+            st.executeUpdate();
+            st.close();
+        } catch (SQLException ex) {
+            Logger.getLogger(ProductDao.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }
+    
+    public void updateCategory(Category category){
+        try {
+            PreparedStatement st = dao.conn.prepareStatement("UPDATE product SET name = ? WHERE id = '"+category.getId()+"';");
+            
+            st.setString(1, category.getName());
+            
+            st.executeUpdate();
+            st.close();
+        } catch (SQLException ex) {
+            Logger.getLogger(ProductDao.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }
+    
+    public void updateSupplier(Supplier supplier){
+        try {
+            PreparedStatement st = dao.conn.prepareStatement("UPDATE product SET name = ?, address = ?, contact_no = ?"
+                                                            + "WHERE id = '"+supplier.getId()+"';");
+            
+            st.setString(1, supplier.getName());
+            st.setString(2, supplier.getAddress());
+            st.setString(3, supplier.getContactNo());
+            
+            st.executeUpdate();
+            st.close();
+        } catch (SQLException ex) {
+            Logger.getLogger(ProductDao.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }
+    
+    public void deleteProduct(int productId){
+        try {
+            PreparedStatement st = dao.conn.prepareStatement("DELETE FROM product WHERE id = '"+productId+"';");
+            
+            st.executeUpdate();
+            st.close();
+        } catch (SQLException ex) {
+            Logger.getLogger(ProductDao.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }
+    
+    public void deleteCategory(int categoryId){
+        try {
+            PreparedStatement st = dao.conn.prepareStatement("DELETE FROM category WHERE id = '"+categoryId+"';");
+            
+            st.executeUpdate();
+            st.close();
+        } catch (SQLException ex) {
+            Logger.getLogger(ProductDao.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }
+    
+    public void deleteSupplier(int supplierId){
+        try {
+            PreparedStatement st = dao.conn.prepareStatement("DELETE FROM supplier WHERE id = '"+supplierId+"';");
             
             st.executeUpdate();
             st.close();
@@ -113,6 +196,24 @@ public class ProductDao {
         
         return categoryName;
     }
+    public int getCategoryId(String categoryName){
+        int categoryId = 0;
+        
+        try {
+            Statement st = dao.conn.createStatement();
+            ResultSet result = st.executeQuery("SELECT id FROM category WHERE name='"+categoryName+"';");
+            
+            while(result.next()){
+                categoryId = result.getInt("id");
+            }
+            
+            result.close();
+            st.close();
+        } catch (SQLException ex) {
+            Logger.getLogger(ProductDao.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return categoryId;
+    }
     public List<Supplier> getAllSuppliers(){
         List<Supplier> suppliers = new ArrayList<Supplier>();
         Supplier supplier;
@@ -156,6 +257,25 @@ public class ProductDao {
         
         return supplierName;
     }
+    public int getSupplierId(String supplierName){
+        int supplierId = 0;
+        
+        try {
+            Statement st = dao.conn.createStatement();
+            ResultSet result = st.executeQuery("SELECT id FROM supplier WHERE name='"+supplierName+"';");
+            
+            while(result.next()){
+                supplierId = result.getInt("id");
+            }
+            
+            result.close();
+            st.close();
+        } catch (SQLException ex) {
+            Logger.getLogger(ProductDao.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        
+        return supplierId;
+    }
     
     public List<Product> getAllProducts(){
         List<Product> products = new ArrayList<Product>();
@@ -184,5 +304,33 @@ public class ProductDao {
             Logger.getLogger(ProductDao.class.getName()).log(Level.SEVERE, null, ex);
         }
         return products;
+    }
+    
+    public Product getProductById(int productId){
+        Product product = new Product();
+        
+        try {
+            Statement st = dao.conn.createStatement();
+            ResultSet result = st.executeQuery("SELECT name, unit_price, selling_price, category, supplier FROM product WHERE id='"+productId+"';");
+            
+            while(result.next()){
+                String name = result.getString("name");
+                int unitPrice = result.getInt("unit_price");
+                int sellingPrice = result.getInt("selling_price");
+                int category = result.getInt("category");
+                int supplier = result.getInt("supplier");
+                
+                product.setName(name);
+                product.setUnitPrice(unitPrice);
+                product.setSellingPrice(sellingPrice);
+                product.setCategory(category);
+                product.setSupplier(supplier);
+            }
+            st.close();
+            result.close();
+        } catch (SQLException ex) {
+            Logger.getLogger(ProductDao.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return product;
     }
 }

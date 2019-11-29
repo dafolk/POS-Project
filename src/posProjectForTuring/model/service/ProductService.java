@@ -6,6 +6,7 @@ import posProjectForTuring.model.Product;
 public interface ProductService {
     public void insertProduct(Product Product);
     public List<Product> getAllProducts();
-    public String getCategoryName(int categoryId);
-    public String getSupplierName(int supplierId);
+    public Product getProductById(int productId);
+    public void updateProduct(Product product);
+    public void deleteProduct(int productId);
 }

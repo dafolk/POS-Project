@@ -11,12 +11,27 @@ public class CategoryServiceImpl implements CategoryService {
     
     @Override
     public void insertCategory(Category category) {
-        productDao.insertCategory(category);
+        this.productDao.insertCategory(category);
     }
 
     @Override
     public List<Category> getAllCategories() {
         return productDao.getAllCategories();
+    }
+
+    @Override
+    public String getCategoryName(int categoryId) {
+        return productDao.getCategoryName(categoryId);
+    }
+
+    @Override
+    public int getCategoryId(String categoryName) {
+        return productDao.getCategoryId(categoryName);
+    }
+
+    @Override
+    public void deleteCategory(int categoryId) {
+        this.productDao.deleteCategory(categoryId);
     }
     
 }

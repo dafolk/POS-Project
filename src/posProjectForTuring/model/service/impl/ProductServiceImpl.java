@@ -11,7 +11,7 @@ public class ProductServiceImpl implements ProductService {
     
     @Override
     public void insertProduct(Product Product) {
-        productDao.insertProduct(Product);
+        this.productDao.insertProduct(Product);
     }
 
     @Override
@@ -20,13 +20,18 @@ public class ProductServiceImpl implements ProductService {
     }
 
     @Override
-    public String getCategoryName(int categoryId) {
-        return productDao.getCategoryName(categoryId);
+    public Product getProductById(int productId) {
+        return productDao.getProductById(productId);
     }
 
     @Override
-    public String getSupplierName(int supplierId) {
-        return productDao.getSupplierName(supplierId);
+    public void updateProduct(Product product) {
+        this.productDao.updateProduct(product);
+    }
+
+    @Override
+    public void deleteProduct(int productId) {
+        this.productDao.deleteProduct(productId);
     }
     
 }

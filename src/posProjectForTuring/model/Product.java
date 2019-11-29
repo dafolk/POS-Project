@@ -7,7 +7,7 @@ public class Product {
     String name;
     int unitPrice;
     int sellingPrice;
-    int categroy;
+    int category;
     int supplier;
     int stock;
     Date lastUpdated;
@@ -20,7 +20,7 @@ public class Product {
         this.name = name;
         this.unitPrice = unitPrice;
         this.sellingPrice = sellingPrice;
-        this.categroy = categroy;
+        this.category = categroy;
         this.supplier = supplier;
         this.stock = stock;
         this.lastUpdated = lastUpdated;
@@ -58,12 +58,12 @@ public class Product {
         this.sellingPrice = sellingPrice;
     }
 
-    public int getCategroy() {
-        return categroy;
+    public int getCategory() {
+        return category;
     }
 
-    public void setCategroy(int categroy) {
-        this.categroy = categroy;
+    public void setCategory(int category) {
+        this.category = category;
     }
 
     public int getSupplier() {

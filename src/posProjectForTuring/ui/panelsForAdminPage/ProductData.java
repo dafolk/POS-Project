@@ -1,4 +1,4 @@
-/*
+ /*
  * To change this license header, choose License Headers in Project Properties.
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
@@ -22,6 +22,10 @@ import posProjectForTuring.model.service.impl.SupplierServiceImpl;
  * @author hp
  */
 public class ProductData extends javax.swing.JPanel {    
+    ProductService productService = new ProductServiceImpl();
+    CategoryService categoryService = new CategoryServiceImpl();
+    SupplierService supplierService = new SupplierServiceImpl();
+    
     public ProductData() {
         initComponents();
         this.tableLoader();
@@ -34,8 +38,6 @@ public class ProductData extends javax.swing.JPanel {
     }
     
     private void loadProducts(){
-        ProductService productService = new ProductServiceImpl();
-    
         List<Product> products = productService.getAllProducts();
         DefaultTableModel model = (DefaultTableModel) this.tblProductData.getModel();
         model.setRowCount(0);
@@ -46,8 +48,8 @@ public class ProductData extends javax.swing.JPanel {
             row[1] = product.getName();
             row[2] = product.getUnitPrice()+" MMK";
             row[3] = product.getSellingPrice()+" MMK";
-            row[4] = productService.getCategoryName(product.getCategroy());
-            row[5] = productService.getSupplierName(product.getSupplier());
+            row[4] = this.categoryService.getCategoryName(product.getCategory());
+            row[5] = this.supplierService.getSupplierName(product.getSupplier());
             row[6] = product.getStock();
             row[7] = product.getLastUpdated();
             
@@ -56,8 +58,6 @@ public class ProductData extends javax.swing.JPanel {
     }
     
     private void loadCategories(){
-        CategoryService categoryService = new CategoryServiceImpl();
-        
         List<Category> categories = categoryService.getAllCategories();
         DefaultTableModel model = (DefaultTableModel) this.tblCategory.getModel();
         model.setRowCount(0);
@@ -71,9 +71,7 @@ public class ProductData extends javax.swing.JPanel {
         }
     }
     
-    private void loadSuppliers(){
-        SupplierService supplierService = new SupplierServiceImpl();
-        
+    private void loadSuppliers(){        
         List<Supplier> suppliers = supplierService.getAllSuppliers();
         DefaultTableModel model = (DefaultTableModel) this.jTable1.getModel();
         model.setRowCount(0);

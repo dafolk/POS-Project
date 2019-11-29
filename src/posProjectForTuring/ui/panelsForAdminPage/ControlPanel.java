@@ -135,28 +135,19 @@ public class ControlPanel extends javax.swing.JPanel {
         );
     }// </editor-fold>//GEN-END:initComponents
     
-    AbstractButton focus;
     
     public void modifyFocusedButtonDesign(AbstractButton focusedButton){
-        List<AbstractButton> otherButtons = new ArrayList<AbstractButton>();
-        for(Component component : this.getComponents()){
-            if(component instanceof AbstractButton){
-                otherButtons.add((AbstractButton)component);
-            }
-        }
-        otherButtons.remove(focusedButton);
-        
         focusedButton.setFont(new java.awt.Font("Arial", java.awt.Font.PLAIN, 20));
         focusedButton.setBorder(BorderFactory.createMatteBorder(0, 0, 0, 10, Color.white));
-        for(AbstractButton otherButton: otherButtons){
-            otherButton.setFont(new java.awt.Font("Arial", java.awt.Font.PLAIN, 13));
-            otherButton.setBorder(BorderFactory.createEmptyBorder());
-        }
         
-        focusedButton = null;
-        otherButtons.clear();
-        focus = focusedButton;
+        for(Component component : this.getComponents()){
+            if(component instanceof AbstractButton && component!= focusedButton){
+                component.setFont(new java.awt.Font("Arial", java.awt.Font.PLAIN, 13));
+                ((AbstractButton)component).setBorder(BorderFactory.createEmptyBorder());
+            }
+        }        
     }
+    
     public void hoverEffect(AbstractButton hoveredButton){
         hoveredButton.addMouseListener(new java.awt.event.MouseAdapter() {
             @Override
@@ -175,14 +166,13 @@ public class ControlPanel extends javax.swing.JPanel {
     
     public void addHoverEffect(){
         for(Component component : this.getComponents()){
-            if(component instanceof AbstractButton && component!= focus){
+            if(component instanceof AbstractButton){
                 hoverEffect((AbstractButton) component);
             }
         }
-        focus = null;
     }
     
-    public void setSelectedVisible(javax.swing.JPanel selectedPanel){
+    public void setSelectedPanelVisible(javax.swing.JPanel selectedPanel){
         List<javax.swing.JPanel> panels = new ArrayList<javax.swing.JPanel>();
         panels.add(AdminPage.productData);
         panels.add(AdminPage.productCrud);
@@ -197,12 +187,12 @@ public class ControlPanel extends javax.swing.JPanel {
     
     private void btnProductDataActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnProductDataActionPerformed
         modifyFocusedButtonDesign(this.btnProductData);
-        setSelectedVisible(AdminPage.productData);
+        setSelectedPanelVisible(AdminPage.productData);
     }//GEN-LAST:event_btnProductDataActionPerformed
 
     private void btnProductCrudActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnProductCrudActionPerformed
         modifyFocusedButtonDesign(this.btnProductCrud);
-        setSelectedVisible(AdminPage.productCrud);
+        setSelectedPanelVisible(AdminPage.productCrud);
     }//GEN-LAST:event_btnProductCrudActionPerformed
 
     private void btnSaleReportsActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSaleReportsActionPerformed

@@ -10,7 +10,7 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import posProjectForTuring.model.Admin;
 
-public class AdminDao {
+public class AdminDao{
     Dao dao = Dao.getDao();
     
     public void insertAdmin(Admin admin){
