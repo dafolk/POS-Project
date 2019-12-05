@@ -33,5 +33,10 @@ public class CategoryServiceImpl implements CategoryService {
     public void deleteCategory(int categoryId) {
         this.productDao.deleteCategory(categoryId);
     }
+
+    @Override
+    public void updateCategory(Category category) {
+        this.productDao.updateCategory(category);
+    }
     
 }

@@ -38,7 +38,7 @@ public class ProductDao {
     
     public void insertSupplier(Supplier supplier){
         try {
-            PreparedStatement st = dao.conn.prepareStatement("INSERT INTO category(name, address, contact_no) "
+            PreparedStatement st = dao.conn.prepareStatement("INSERT INTO supplier(name, address, contact_no) "
                     + "VALUES(?,?,?);");
             
             st.setString(1, supplier.getName());
@@ -96,9 +96,10 @@ public class ProductDao {
     
     public void updateCategory(Category category){
         try {
-            PreparedStatement st = dao.conn.prepareStatement("UPDATE product SET name = ? WHERE id = '"+category.getId()+"';");
+            PreparedStatement st = dao.conn.prepareStatement("UPDATE category SET name = ? WHERE id = ?;");
             
             st.setString(1, category.getName());
+            st.setInt(2, category.getId());
             
             st.executeUpdate();
             st.close();
@@ -109,12 +110,13 @@ public class ProductDao {
     
     public void updateSupplier(Supplier supplier){
         try {
-            PreparedStatement st = dao.conn.prepareStatement("UPDATE product SET name = ?, address = ?, contact_no = ?"
-                                                            + "WHERE id = '"+supplier.getId()+"';");
+            PreparedStatement st = dao.conn.prepareStatement("UPDATE supplier SET name = ?, address = ?, contact_no = ?"
+                                                            + "WHERE id = ?;");
             
             st.setString(1, supplier.getName());
             st.setString(2, supplier.getAddress());
             st.setString(3, supplier.getContactNo());
+            st.setInt(4, supplier.getId());
             
             st.executeUpdate();
             st.close();
@@ -125,7 +127,9 @@ public class ProductDao {
     
     public void deleteProduct(int productId){
         try {
-            PreparedStatement st = dao.conn.prepareStatement("DELETE FROM product WHERE id = '"+productId+"';");
+            PreparedStatement st = dao.conn.prepareStatement("DELETE FROM product WHERE id = ?;");
+            
+            st.setInt(1, productId);
             
             st.executeUpdate();
             st.close();
@@ -311,20 +315,24 @@ public class ProductDao {
         
         try {
             Statement st = dao.conn.createStatement();
-            ResultSet result = st.executeQuery("SELECT name, unit_price, selling_price, category, supplier FROM product WHERE id='"+productId+"';");
+            ResultSet result = st.executeQuery("SELECT * FROM product WHERE id='"+productId+"';");
             
             while(result.next()){
+                int id = result.getInt("id");
                 String name = result.getString("name");
                 int unitPrice = result.getInt("unit_price");
                 int sellingPrice = result.getInt("selling_price");
                 int category = result.getInt("category");
                 int supplier = result.getInt("supplier");
+                int stock = result.getInt("stock");
                 
+                product.setId(id);
                 product.setName(name);
                 product.setUnitPrice(unitPrice);
                 product.setSellingPrice(sellingPrice);
                 product.setCategory(category);
                 product.setSupplier(supplier);
+                product.setStock(stock);
             }
             st.close();
             result.close();
@@ -332,5 +340,48 @@ public class ProductDao {
             Logger.getLogger(ProductDao.class.getName()).log(Level.SEVERE, null, ex);
         }
         return product;
+    }
+    
+    public Supplier getSupplierById(int supplierId){
+        Supplier supplier = new Supplier();
+        
+        try {
+            Statement st = dao.conn.createStatement();
+            ResultSet result = st.executeQuery("SELECT * FROM supplier WHERE id='"+supplierId+"';");
+            
+            while(result.next()){
+                int id = result.getInt("id");
+                String name = result.getString("name");
+                String address = result.getString("address");
+                String contactNo = result.getString("contact_no");
+                
+                supplier.setId(id);
+                supplier.setName(name);
+                supplier.setAddress(address);
+                supplier.setContactNo(contactNo);
+            }
+            st.close();
+            result.close();
+        } catch (SQLException ex) {
+            Logger.getLogger(ProductDao.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return supplier;
+    }
+    
+    public void restockProduct(Product product){
+        try {
+            PreparedStatement st = dao.conn.prepareStatement("UPDATE product "
+                                                            + "SET stock = ?, last_updated = ? "
+                                                            + "WHERE id = ?;");
+            
+            st.setInt(1, product.getStock());
+            st.setTimestamp(2, CurrentDateTime.get());
+            st.setInt(3 , product.getId());
+            
+            st.executeUpdate();
+            st.close();
+        } catch (SQLException ex) {
+            Logger.getLogger(ProductDao.class.getName()).log(Level.SEVERE, null, ex);
+        }
     }
 }

@@ -8,5 +8,6 @@ public interface CategoryService {
     public List<Category> getAllCategories();
     public int getCategoryId(String categoryName);
     public String getCategoryName(int categoryId);
+    public void updateCategory(Category category);
     public void deleteCategory(int categoryId);
 }

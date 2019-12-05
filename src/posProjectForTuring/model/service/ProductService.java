@@ -9,4 +9,5 @@ public interface ProductService {
     public Product getProductById(int productId);
     public void updateProduct(Product product);
     public void deleteProduct(int productId);
+    public void restockProduct(Product product);
 }

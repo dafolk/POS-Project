@@ -33,5 +33,15 @@ public class SupplierServiceImpl implements SupplierService {
     public void deleteSupplier(int supplierId) {
         this.productDao.deleteSupplier(supplierId);
     }
+
+    @Override
+    public Supplier getSupplierById(int supplierId) {
+        return this.productDao.getSupplierById(supplierId);
+    }
+
+    @Override
+    public void updateSupplier(Supplier supplier) {
+        this.productDao.updateSupplier(supplier);
+    }
     
 }
