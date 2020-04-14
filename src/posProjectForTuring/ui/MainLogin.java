@@ -28,22 +28,26 @@ public class MainLogin extends javax.swing.JFrame {
      */
     public MainLogin() {
         initComponents();
+        this.startUp();
+    }
+    
+    private void startUp(){
+        if(isAdminExist()){
+            this.btnAdminSetup.setVisible(false);
+        }
+        else{
             this.btnAdminSetup.setVisible(true);
+        }
     }
 
     public boolean isAdminExist(){
         boolean bool;
         AdminService adminService = new AdminServiceImpl();        
-        List<Admin> adminList = new ArrayList<Admin>();
+        List<Admin> adminList;
         
         adminList = adminService.getAllAdmin();
         
-        if(adminList.isEmpty()){
-            bool = false;
-        }
-        else{
-            bool = true;
-        }
+        bool = !adminList.isEmpty();
         
         return bool;
     }
@@ -51,16 +55,11 @@ public class MainLogin extends javax.swing.JFrame {
         boolean bool;
         
         CashierService cashierService = new CashierServiceImpl();
-        List<Cashier> cashierList = new ArrayList<Cashier>();
+        List<Cashier> cashierList;
         
         cashierList = cashierService.getAllCashiers();
         
-        if(cashierList.isEmpty()){
-            bool = false;
-        }
-        else{
-            bool = true;
-        }
+        bool = !cashierList.isEmpty();
         
         return bool;
     }
@@ -81,7 +80,7 @@ public class MainLogin extends javax.swing.JFrame {
         btnAdminSetup = new javax.swing.JButton();
         jButton2 = new javax.swing.JButton();
 
-        setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
         setBackground(new java.awt.Color(204, 0, 204));
         setLocation(new java.awt.Point(600, 200));
         setUndecorated(true);
@@ -196,8 +195,7 @@ public class MainLogin extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void btnAdminSetupActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAdminSetupActionPerformed
-        AdminAccountRegistration adminAccountRegistration = new AdminAccountRegistration();
-        adminAccountRegistration.setVisible(true);
+        new FirstTimeAdminAccountRegistrationDialog(MainLogin.mainLogin).setVisible(true);
     }//GEN-LAST:event_btnAdminSetupActionPerformed
 
     private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
@@ -209,8 +207,7 @@ public class MainLogin extends javax.swing.JFrame {
             JOptionPane.showMessageDialog(null, "Admin account does not exist!\nPlease Setup an Admin account first!", "NO ADMIN ACCOUNT!", WARNING_MESSAGE);
         }
         else{
-            AdminLogin adminLogin = new AdminLogin();
-            adminLogin.setVisible(true);
+            new AdminLoginDialog(MainLogin.mainLogin).setVisible(true);
         }
     }//GEN-LAST:event_btnAdminLoginActionPerformed
 
@@ -219,12 +216,11 @@ public class MainLogin extends javax.swing.JFrame {
             JOptionPane.showMessageDialog(null, "Cashier account does not exist!\nAsk your supervisor for more information!", "NO CASHIER ACCOUNT!", WARNING_MESSAGE);
         }
         else{
-            CashierLogin cashierLogin = new CashierLogin();
-            cashierLogin.setVisible(true);
+            new CashierLoginDialog(MainLogin.mainLogin).setVisible(true);
         }
     }//GEN-LAST:event_btnCashierLoginActionPerformed
 
-    static MainLogin mainLogin;
+    public static MainLogin mainLogin;
     public static void disposeMainLogin(){
         mainLogin.dispose();
     }
@@ -233,46 +229,12 @@ public class MainLogin extends javax.swing.JFrame {
      * @param args the command line arguments
      */
     public static void main(String args[]) {
-        /* Set the Nimbus look and feel */
-        //<editor-fold defaultstate="collapsed" desc=" Look and feel setting code (optional) ">
-        /* If Nimbus (introduced in Java SE 6) is not available, stay with the default look and feel.
-         * For details see http://download.oracle.com/javase/tutorial/uiswing/lookandfeel/plaf.html 
-         */
-        try {
-            for (javax.swing.UIManager.LookAndFeelInfo info : javax.swing.UIManager.getInstalledLookAndFeels()) {
-                if ("Nimbus".equals(info.getName())) {
-                    javax.swing.UIManager.setLookAndFeel(info.getClassName());
-                    break;
-                }
-            }
-        } catch (ClassNotFoundException ex) {
-            java.util.logging.Logger.getLogger(MainLogin.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (InstantiationException ex) {
-            java.util.logging.Logger.getLogger(MainLogin.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (IllegalAccessException ex) {
-            java.util.logging.Logger.getLogger(MainLogin.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (javax.swing.UnsupportedLookAndFeelException ex) {
-            java.util.logging.Logger.getLogger(MainLogin.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        }
-        //</editor-fold>
-        //</editor-fold>
-        //</editor-fold>
-        //</editor-fold>
-
+        
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable() {
-            public void run() {
-                try {
-                    for (javax.swing.UIManager.LookAndFeelInfo info : javax.swing.UIManager.getInstalledLookAndFeels()) {
-                        if ("Metal".equals(info.getName())) {
-                            javax.swing.UIManager.setLookAndFeel(info.getClassName());
-                            break;
-                        }
-                    }
-                } catch (Exception e){
-                    e.printStackTrace();
-                }
-                new MainLogin().setVisible(true);
+            public void run() {                
+                mainLogin = new MainLogin();
+                mainLogin.setVisible(true);
             }
         });
     }

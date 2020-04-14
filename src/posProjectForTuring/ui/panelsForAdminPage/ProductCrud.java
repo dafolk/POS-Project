@@ -2,10 +2,9 @@ package posProjectForTuring.ui.panelsForAdminPage;
 
 import java.awt.Color;
 import java.awt.Component;
-import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
-import static java.awt.event.KeyEvent.VK_BACK_SPACE;
 import static java.lang.Integer.parseInt;
+import java.util.ArrayList;
 import java.util.List;
 import javax.swing.AbstractButton;
 import javax.swing.BorderFactory;
@@ -15,9 +14,10 @@ import static javax.swing.JOptionPane.QUESTION_MESSAGE;
 import static javax.swing.JOptionPane.WARNING_MESSAGE;
 import static javax.swing.JOptionPane.YES_NO_OPTION;
 import javax.swing.event.ListSelectionEvent;
-import javax.swing.event.ListSelectionListener;
 import javax.swing.table.DefaultTableModel;
 import posProjectForTuring.controller.CurrentDateTime;
+import posProjectForTuring.controller.Publisher;
+import posProjectForTuring.controller.Subscriber;
 import posProjectForTuring.model.Category;
 import posProjectForTuring.model.Product;
 import posProjectForTuring.model.Supplier;
@@ -27,8 +27,9 @@ import posProjectForTuring.model.service.SupplierService;
 import posProjectForTuring.model.service.impl.CategoryServiceImpl;
 import posProjectForTuring.model.service.impl.ProductServiceImpl;
 import posProjectForTuring.model.service.impl.SupplierServiceImpl; 
+import posProjectForTuring.ui.AdminPage;
 
-public class ProductCrud extends javax.swing.JPanel {    
+public class ProductCrud extends javax.swing.JPanel implements Publisher {    
     Product product = new Product();
     Category category = new Category();
     Supplier supplier = new Supplier();
@@ -190,7 +191,6 @@ public class ProductCrud extends javax.swing.JPanel {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
-        adminAccountRegistration1 = new posProjectForTuring.ui.AdminAccountRegistration();
         jtbProductData = new javax.swing.JTabbedPane();
         pnlProductDetails = new javax.swing.JPanel();
         jScrollPane1 = new javax.swing.JScrollPane();
@@ -337,6 +337,10 @@ public class ProductCrud extends javax.swing.JPanel {
             }
         });
         jScrollPane1.setViewportView(tblProductData);
+        if (tblProductData.getColumnModel().getColumnCount() > 0) {
+            tblProductData.getColumnModel().getColumn(0).setPreferredWidth(50);
+            tblProductData.getColumnModel().getColumn(1).setPreferredWidth(350);
+        }
 
         btnNewProductPanel.setBackground(java.awt.Color.decode("#263238"));
         btnNewProductPanel.setFont(new java.awt.Font("Arial", 0, 13)); // NOI18N
@@ -393,14 +397,29 @@ public class ProductCrud extends javax.swing.JPanel {
         txtNewProductName.setFont(new java.awt.Font("Arial", 0, 15)); // NOI18N
 
         txtNewUnitPrice.setFont(new java.awt.Font("Arial", 0, 15)); // NOI18N
+        txtNewUnitPrice.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyPressed(java.awt.event.KeyEvent evt) {
+                txtNewUnitPriceKeyPressed(evt);
+            }
+        });
 
         txtNewSellingPrice.setFont(new java.awt.Font("Arial", 0, 15)); // NOI18N
+        txtNewSellingPrice.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyPressed(java.awt.event.KeyEvent evt) {
+                txtNewSellingPriceKeyPressed(evt);
+            }
+        });
 
         cmbNewCategory.setFont(new java.awt.Font("Arial", 0, 15)); // NOI18N
 
         cmbNewSupplier.setFont(new java.awt.Font("Arial", 0, 15)); // NOI18N
 
         txtNewStock.setFont(new java.awt.Font("Arial", 0, 15)); // NOI18N
+        txtNewStock.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyPressed(java.awt.event.KeyEvent evt) {
+                txtNewStockKeyPressed(evt);
+            }
+        });
 
         btnAddNewProduct.setFont(new java.awt.Font("Tahoma", 0, 15)); // NOI18N
         btnAddNewProduct.setText("Add New Product");
@@ -494,8 +513,18 @@ public class ProductCrud extends javax.swing.JPanel {
         txtProductName.setFont(new java.awt.Font("Arial", 0, 15)); // NOI18N
 
         txtUnitPrice.setFont(new java.awt.Font("Arial", 0, 15)); // NOI18N
+        txtUnitPrice.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyPressed(java.awt.event.KeyEvent evt) {
+                txtUnitPriceKeyPressed(evt);
+            }
+        });
 
         txtSellingPrice.setFont(new java.awt.Font("Arial", 0, 15)); // NOI18N
+        txtSellingPrice.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyPressed(java.awt.event.KeyEvent evt) {
+                txtSellingPriceKeyPressed(evt);
+            }
+        });
 
         cmbCategory.setFont(new java.awt.Font("Arial", 0, 15)); // NOI18N
 
@@ -913,6 +942,10 @@ public class ProductCrud extends javax.swing.JPanel {
             }
         });
         jScrollPane2.setViewportView(tblCategory);
+        if (tblCategory.getColumnModel().getColumnCount() > 0) {
+            tblCategory.getColumnModel().getColumn(0).setPreferredWidth(50);
+            tblCategory.getColumnModel().getColumn(1).setPreferredWidth(1000);
+        }
 
         btnNewCategoryPanel.setBackground(java.awt.Color.decode("#263238"));
         btnNewCategoryPanel.setFont(new java.awt.Font("Arial", 0, 13)); // NOI18N
@@ -1158,7 +1191,7 @@ public class ProductCrud extends javax.swing.JPanel {
                 .addGap(50, 50, 50)
                 .addComponent(jSeparator4, javax.swing.GroupLayout.PREFERRED_SIZE, 10, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(categoryCrudPane, javax.swing.GroupLayout.DEFAULT_SIZE, 377, Short.MAX_VALUE)
+                .addComponent(categoryCrudPane, javax.swing.GroupLayout.PREFERRED_SIZE, 379, Short.MAX_VALUE)
                 .addContainerGap())
         );
 
@@ -1183,6 +1216,11 @@ public class ProductCrud extends javax.swing.JPanel {
             }
         });
         jScrollPane3.setViewportView(tblSupplier);
+        if (tblSupplier.getColumnModel().getColumnCount() > 0) {
+            tblSupplier.getColumnModel().getColumn(0).setPreferredWidth(50);
+            tblSupplier.getColumnModel().getColumn(1).setPreferredWidth(300);
+            tblSupplier.getColumnModel().getColumn(2).setPreferredWidth(500);
+        }
 
         btnNewSupplierPanel.setBackground(java.awt.Color.decode("#263238"));
         btnNewSupplierPanel.setFont(new java.awt.Font("Arial", 0, 13)); // NOI18N
@@ -1277,7 +1315,7 @@ public class ProductCrud extends javax.swing.JPanel {
                         .addGroup(pnlNewSupplierLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(txtNewSupplierName, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addComponent(txtNewAddress, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 128, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 131, Short.MAX_VALUE)
                 .addComponent(btnAddNewSupplier)
                 .addGap(51, 51, 51))
         );
@@ -1494,7 +1532,7 @@ public class ProductCrud extends javax.swing.JPanel {
                 .addGap(63, 63, 63)
                 .addComponent(jSeparator5, javax.swing.GroupLayout.PREFERRED_SIZE, 10, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(supplierCrudPane, javax.swing.GroupLayout.DEFAULT_SIZE, 377, Short.MAX_VALUE))
+                .addComponent(supplierCrudPane, javax.swing.GroupLayout.PREFERRED_SIZE, 377, Short.MAX_VALUE))
         );
 
         jtbProductData.addTab("Supplier Details", pnlSupplierDetails);
@@ -1566,17 +1604,21 @@ public class ProductCrud extends javax.swing.JPanel {
             this.removeCrudText(this.pnlRestockProduct);
             this.modifyFocusedButtonDesign(this.productCrudPane, this.btnNewProductPanel);
             this.setSelectedCrudPanelVisible(this.productCrudPanelPane, this.pnlNewProduct);
-            this.loadCategories();
+            this.loadProducts();
+            
+            AdminPage.changeUpdateToSubscriber();
         }
     }//GEN-LAST:event_btnRemoveProductActionPerformed
 
     private void btnUpdateProductActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnUpdateProductActionPerformed
         this.editProduct();
+        AdminPage.changeUpdateToSubscriber();
         
     }//GEN-LAST:event_btnUpdateProductActionPerformed
 
     private void btnAddNewProductActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAddNewProductActionPerformed
         this.addnewProduct();
+        AdminPage.changeUpdateToSubscriber();
         
     }//GEN-LAST:event_btnAddNewProductActionPerformed
 
@@ -1596,12 +1638,20 @@ public class ProductCrud extends javax.swing.JPanel {
         if(!txtStock.getText().isEmpty()){
             Product selectedProduct = this.productService.getProductById(product.getId());
             
-            int updatedStock = selectedProduct.getStock()+parseInt(this.txtStock.getText());
-            selectedProduct.setStock(updatedStock);
+            selectedProduct.setStockRestocked(parseInt(this.txtStock.getText()));
             
             this.productService.restockProduct(selectedProduct);
+            
             JOptionPane.showMessageDialog(null, "Product is successfully restocked!", "Product Restocked!", INFORMATION_MESSAGE);
+            
+            this.removeCrudText(this.pnlEditProduct);
+            this.removeCrudText(this.pnlDeleteProduct);
+            this.removeCrudText(this.pnlRestockProduct);
+            this.modifyFocusedButtonDesign(this.productCrudPane, this.btnNewProductPanel);
+            this.setSelectedCrudPanelVisible(this.productCrudPanelPane, this.pnlNewProduct);
             this.loadProducts();
+            
+            AdminPage.changeUpdateToSubscriber();
         }
         else{
             JOptionPane.showMessageDialog(null, "Stock amount is required!", "Product cannot be restocked!", WARNING_MESSAGE);
@@ -1674,6 +1724,8 @@ public class ProductCrud extends javax.swing.JPanel {
             JOptionPane.showMessageDialog(null, "New Category is Successfully Addded!", "New Category Added!", INFORMATION_MESSAGE);
             this.txtNewCategoryName.setText("");
             this.loadCategories();
+            
+            AdminPage.changeUpdateToSubscriber();
         }
     }//GEN-LAST:event_btnAddNewCategoryActionPerformed
 
@@ -1688,6 +1740,8 @@ public class ProductCrud extends javax.swing.JPanel {
         this.loadCategories();
         this.modifyFocusedButtonDesign(this.categoryCrudPane, this.btnNewCategoryPanel);
         this.setSelectedCrudPanelVisible(this.categoryCrudPanelPane, this.pnlNewCategory);
+        
+        AdminPage.changeUpdateToSubscriber();
     }//GEN-LAST:event_btnUpdateCategoryActionPerformed
 
     private void btnRemoveCategoryActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnRemoveCategoryActionPerformed
@@ -1703,6 +1757,8 @@ public class ProductCrud extends javax.swing.JPanel {
             this.loadCategories();
             this.modifyFocusedButtonDesign(this.categoryCrudPane, this.btnNewCategoryPanel);
             this.setSelectedCrudPanelVisible(this.categoryCrudPanelPane, this.pnlNewCategory);
+            
+            AdminPage.changeUpdateToSubscriber();
         }
     }//GEN-LAST:event_btnRemoveCategoryActionPerformed
 
@@ -1720,6 +1776,9 @@ public class ProductCrud extends javax.swing.JPanel {
             
             this.removeCrudText(this.pnlNewSupplier);
             this.loadSuppliers();
+            
+            
+            AdminPage.changeUpdateToSubscriber();
         }
     }//GEN-LAST:event_btnAddNewSupplierActionPerformed
 
@@ -1734,6 +1793,8 @@ public class ProductCrud extends javax.swing.JPanel {
         this.loadSuppliers();
         this.modifyFocusedButtonDesign(this.supplierCrudPane, this.btnNewSupplierPanel);
         this.setSelectedCrudPanelVisible(this.supplierCrudPanelPane, this.pnlNewSupplier);
+        
+        AdminPage.changeUpdateToSubscriber();
     }//GEN-LAST:event_btnUpdateSuppilerActionPerformed
 
     private void btnRemoveSupplierActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnRemoveSupplierActionPerformed
@@ -1747,15 +1808,108 @@ public class ProductCrud extends javax.swing.JPanel {
             this.loadSuppliers();
             this.modifyFocusedButtonDesign(this.supplierCrudPane, this.btnNewSupplierPanel);
             this.setSelectedCrudPanelVisible(this.supplierCrudPanelPane, this.pnlNewSupplier);
+            
+            AdminPage.changeUpdateToSubscriber();
         }
     }//GEN-LAST:event_btnRemoveSupplierActionPerformed
+
+    private void txtNewUnitPriceKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtNewUnitPriceKeyPressed
+        if (
+                Character.isDigit(evt.getKeyChar()) || 
+                evt.getKeyCode() == KeyEvent.VK_BACK_SPACE || 
+                evt.getKeyCode() == KeyEvent.VK_ENTER
+        ) {
+            txtNewUnitPrice.setEditable(true);
+        }
+            
+        else if(evt.getKeyCode() == KeyEvent.VK_BACK_SPACE){
+            txtNewUnitPrice.setEditable(true);
+        }
+        
+        else{
+            txtNewUnitPrice.setEditable(false);
+        }
+    }//GEN-LAST:event_txtNewUnitPriceKeyPressed
+
+    private void txtNewSellingPriceKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtNewSellingPriceKeyPressed
+        if (
+                Character.isDigit(evt.getKeyChar()) || 
+                evt.getKeyCode() == KeyEvent.VK_BACK_SPACE || 
+                evt.getKeyCode() == KeyEvent.VK_ENTER
+        ) {
+            txtNewSellingPrice.setEditable(true);
+        }
+            
+        else if(evt.getKeyCode() == KeyEvent.VK_BACK_SPACE){
+            txtNewSellingPrice.setEditable(true);
+        }
+        
+        else{
+            txtNewSellingPrice.setEditable(false);
+        }
+    }//GEN-LAST:event_txtNewSellingPriceKeyPressed
+
+    private void txtNewStockKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtNewStockKeyPressed
+        if (
+                Character.isDigit(evt.getKeyChar()) || 
+                evt.getKeyCode() == KeyEvent.VK_BACK_SPACE || 
+                evt.getKeyCode() == KeyEvent.VK_ENTER
+        ) {
+            txtNewStock.setEditable(true);
+        }
+            
+        else if(evt.getKeyCode() == KeyEvent.VK_BACK_SPACE){
+            txtNewStock.setEditable(true);
+        }
+        
+        else{
+            txtNewStock.setEditable(false);
+        }
+    }//GEN-LAST:event_txtNewStockKeyPressed
+
+    private void txtUnitPriceKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtUnitPriceKeyPressed
+        if (
+                Character.isDigit(evt.getKeyChar()) || 
+                evt.getKeyCode() == KeyEvent.VK_BACK_SPACE || 
+                evt.getKeyCode() == KeyEvent.VK_ENTER
+        ) {
+            txtUnitPrice.setEditable(true);
+        }
+            
+        else if(evt.getKeyCode() == KeyEvent.VK_BACK_SPACE){
+            txtUnitPrice.setEditable(true);
+        }
+        
+        else{
+            txtUnitPrice.setEditable(false);
+        }
+    }//GEN-LAST:event_txtUnitPriceKeyPressed
+
+    private void txtSellingPriceKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtSellingPriceKeyPressed
+        if (
+                Character.isDigit(evt.getKeyChar()) || 
+                evt.getKeyCode() == KeyEvent.VK_BACK_SPACE || 
+                evt.getKeyCode() == KeyEvent.VK_ENTER
+        ) {
+            txtSellingPrice.setEditable(true);
+        }
+            
+        else if(evt.getKeyCode() == KeyEvent.VK_BACK_SPACE){
+            txtSellingPrice.setEditable(true);
+        }
+        
+        else{
+            txtSellingPrice.setEditable(false);
+        }
+    }//GEN-LAST:event_txtSellingPriceKeyPressed
     
     private boolean isProductSelectionEmpty(){
         return this.tblProductData.getSelectionModel().isSelectionEmpty();
     }
     
-    private void addnewProduct(){        
-        this.product.setName(this.txtNewProductName.getText());
+    private void addnewProduct(){       
+        if(isNewProductRequiredFieldFilled()){
+            this.product.setName(this.txtNewProductName.getText());
         this.product.setUnitPrice(parseInt(this.txtNewUnitPrice.getText()));
         this.product.setSellingPrice(parseInt(this.txtNewSellingPrice.getText()));
         this.product.setCategory(this.categoryService.getCategoryId(this.cmbNewCategory.getSelectedItem().toString()));
@@ -1767,6 +1921,25 @@ public class ProductCrud extends javax.swing.JPanel {
         this.productService.insertProduct(product);
         JOptionPane.showMessageDialog(null, "New Product is Successfully Addded!", "New Product Added!", INFORMATION_MESSAGE);
         this.loadProducts();
+        }
+        else{
+            JOptionPane.showMessageDialog(null, "Not all fields are filled yet!", "Fill in the required field!", INFORMATION_MESSAGE);
+        }
+    }
+    
+    private boolean isNewProductRequiredFieldFilled(){
+        if(
+                !txtNewProductName.getText().isEmpty() &&
+                !this.txtNewUnitPrice.getText().isEmpty() &&
+                !this.txtNewSellingPrice.getText().isEmpty() &&
+                !this.txtNewStock.getText().isEmpty()
+        ){
+            return true;
+        }
+        
+        else{
+            return false;
+        }
     }
     
     private void editProduct() {
@@ -1798,7 +1971,7 @@ public class ProductCrud extends javax.swing.JPanel {
         }
     }
     
-    public void modifyFocusedButtonDesign(javax.swing.JLayeredPane jLayeredPane, AbstractButton focusedButton){
+    private void modifyFocusedButtonDesign(javax.swing.JLayeredPane jLayeredPane, AbstractButton focusedButton){
         focusedButton.setFont(new java.awt.Font("Arial", java.awt.Font.PLAIN, 20));
         focusedButton.setBorder(BorderFactory.createMatteBorder(0, 0, 5, 0, Color.white));
         
@@ -1810,7 +1983,7 @@ public class ProductCrud extends javax.swing.JPanel {
         }
     }
     
-    public void setSelectedCrudPanelVisible(javax.swing.JLayeredPane jLayeredPane, javax.swing.JPanel selectedPanel){
+    private void setSelectedCrudPanelVisible(javax.swing.JLayeredPane jLayeredPane, javax.swing.JPanel selectedPanel){
         selectedPanel.setVisible(true);
         for(Component component : jLayeredPane.getComponents()){
             if(component instanceof javax.swing.JPanel && component!= selectedPanel){
@@ -1834,7 +2007,6 @@ public class ProductCrud extends javax.swing.JPanel {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private posProjectForTuring.ui.AdminAccountRegistration adminAccountRegistration1;
     private javax.swing.JButton btnAddNewCategory;
     private javax.swing.JButton btnAddNewProduct;
     private javax.swing.JButton btnAddNewSupplier;
@@ -1956,4 +2128,18 @@ public class ProductCrud extends javax.swing.JPanel {
     private javax.swing.JTextField txtSupplierName;
     private javax.swing.JTextField txtUnitPrice;
     // End of variables declaration//GEN-END:variables
+
+    List<Subscriber> subscribers = new ArrayList<>();
+    
+    @Override
+    public void addSubscriber(Subscriber subscriber) {
+        subscribers.add(subscriber);
+    }
+
+    @Override
+    public void change() {
+        for(Subscriber subscriber: subscribers){
+            subscriber.update();
+        }
+    }
 }

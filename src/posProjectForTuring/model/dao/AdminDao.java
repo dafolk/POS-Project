@@ -31,7 +31,9 @@ public class AdminDao{
         }
     }
      public List<Admin> getAllAdmin() {
-        List<Admin> admins = new ArrayList<Admin>();
+        List<Admin> admins = new ArrayList<>();
+        Admin admin = new Admin();
+        
         try{
            Statement st = dao.conn.createStatement();
            ResultSet result = st.executeQuery("SELECT * FROM admin;");
@@ -44,7 +46,8 @@ public class AdminDao{
                String phoneNo = result.getString("phone_no");
                String address = result.getString("address");
                
-               Admin admin = new Admin(id, name, username, password, phoneNo, address);
+               admin = new Admin(id, name, username, password, phoneNo, address);
+               
                admins.add(admin);
            }
            result.close();
@@ -54,5 +57,29 @@ public class AdminDao{
             Logger.getLogger(AdminDao.class.getName()).log(Level.SEVERE, null, ex);
         }
         return admins;
+    }
+    public Admin getAdminByUsername(String username){
+        Admin admin = new Admin();
+        
+        try {
+            PreparedStatement st = dao.conn.prepareStatement("SELECT * FROM admin WHERE username=?;");
+            st.setString(1, username);
+            
+            ResultSet result = st.executeQuery();
+            
+            while(result.next()){                
+                admin.setId(result.getInt("id"));
+                admin.setName(result.getString("name"));
+                admin.setUsername(result.getString("username"));
+                admin.setPassword(result.getString("password"));
+                admin.setPhoneNo(result.getString("phone_no"));
+                admin.setAddress(result.getString("address"));
+            }
+            st.close();
+            result.close();
+        } catch (SQLException ex) {
+            Logger.getLogger(ProductDao.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return admin;
     }
 }

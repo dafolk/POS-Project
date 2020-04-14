@@ -9,7 +9,7 @@ public class Product {
     int sellingPrice;
     int category;
     int supplier;
-    int stock;
+    int stock, stockRestocked, stockPurchased;
     Date lastUpdated;
 
     public Product() {
@@ -88,6 +88,22 @@ public class Product {
 
     public void setLastUpdated(Date lastUpdated) {
         this.lastUpdated = lastUpdated;
+    }
+
+    public int getStockRestocked() {
+        return stockRestocked;
+    }
+
+    public void setStockRestocked(int stockRestocked) {
+        this.stockRestocked = stockRestocked;
+    }
+
+    public int getStockPurchased() {
+        return stockPurchased;
+    }
+
+    public void setStockPurchased(int stockPurchased) {
+        this.stockPurchased = stockPurchased;
     }
     
     

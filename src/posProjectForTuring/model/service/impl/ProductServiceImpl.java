@@ -38,5 +38,20 @@ public class ProductServiceImpl implements ProductService {
     public void restockProduct(Product product) {
         this.productDao.restockProduct(product);
     }
+
+    @Override
+    public void reduceStock(Product product) {
+        this.productDao.reduceStock(product);
+    }
+
+    @Override
+    public List<Product> getProductByCategory(int categoryId) {
+        return this.productDao.getProductByCategory(categoryId);
+    }
+
+    @Override
+    public List<Product> findProductByName(String searchString) {
+        return this.productDao.findProductByName(searchString);
+    }
     
 }

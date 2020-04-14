@@ -14,5 +14,9 @@ import posProjectForTuring.model.Cashier;
  */
 public interface CashierService {
     public void insertCashier(Cashier cashier);
+    public void updateCashier(Cashier cashier);
+    public void deleteCashier(int cashierId);
     public List<Cashier> getAllCashiers();
+    public Cashier getCashierById(int cashierId);
+    public Cashier getCashierByUsername(String username);
 }

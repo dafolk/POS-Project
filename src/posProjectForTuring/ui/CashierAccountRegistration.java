@@ -9,9 +9,8 @@ import javax.swing.ImageIcon;
 import javax.swing.JOptionPane;
 import static javax.swing.JOptionPane.INFORMATION_MESSAGE;
 import static javax.swing.JOptionPane.WARNING_MESSAGE;
-import posProjectForTuring.controller.PasswordHashing;
+import posProjectForTuring.controller.PasswordUtil;
 import posProjectForTuring.model.Cashier;
-import posProjectForTuring.model.dao.CashierDao;
 import posProjectForTuring.model.service.CashierService;
 import posProjectForTuring.model.service.impl.CashierServiceImpl;
 
@@ -170,12 +169,11 @@ public class CashierAccountRegistration extends javax.swing.JFrame {
     
     private void btnSignUpActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSignUpActionPerformed
         Cashier cashier = new Cashier();
-        PasswordHashing passwordHashing = new PasswordHashing();
         
         if(isPerfect() && isPasswordConfirm()){
             cashier.setName(this.txtName.getText());
             cashier.setUsername(this.txtUsername.getText());
-            cashier.setPassword(passwordHashing.hash(this.pwdPassword.getText()));
+            cashier.setPassword(PasswordUtil.hashPassword(this.pwdPassword.getText()));
             
             cashierService.insertCashier(cashier);
 
@@ -257,6 +255,9 @@ public class CashierAccountRegistration extends javax.swing.JFrame {
         }
     }
     
+    public static void main(String[] args) {
+        new CashierAccountRegistration().setVisible(true);
+    }
     /**
      * @param args the command line arguments
      */

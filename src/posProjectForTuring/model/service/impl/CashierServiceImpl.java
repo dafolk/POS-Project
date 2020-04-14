@@ -27,5 +27,25 @@ public class CashierServiceImpl implements CashierService {
     public List<Cashier> getAllCashiers() {
         return cashierDao.getAllCashiers();
     }
+
+    @Override
+    public Cashier getCashierById(int cashierId) {
+        return this.cashierDao.getCashierById(cashierId);
+    }
+
+    @Override
+    public void updateCashier(Cashier cashier) {
+        this.cashierDao.updateCashier(cashier);
+    }
+
+    @Override
+    public void deleteCashier(int cashierId) {
+        this.cashierDao.deleteCashier(cashierId);
+    }
+
+    @Override
+    public Cashier getCashierByUsername(String username) {
+        return this.cashierDao.getCashierByUsername(username);
+    }
     
 }

@@ -10,4 +10,7 @@ public interface ProductService {
     public void updateProduct(Product product);
     public void deleteProduct(int productId);
     public void restockProduct(Product product);
+    public List<Product> getProductByCategory(int categoryId);
+    public List<Product> findProductByName(String searchString);
+    public void reduceStock(Product product);
 }

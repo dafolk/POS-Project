@@ -26,5 +26,10 @@ public class AdminServiceImpl implements AdminService {
     public List<Admin> getAllAdmin() {
         return adminDao.getAllAdmin();
     }
+
+    @Override
+    public Admin getAdminByUsername(String username) {
+        return adminDao.getAdminByUsername(username);
+    }
     
 }

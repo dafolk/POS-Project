@@ -6,4 +6,5 @@ import posProjectForTuring.model.Admin;
 public interface AdminService {
     public void insertAdmin(Admin admin);
     public List<Admin> getAllAdmin();
+    public Admin getAdminByUsername(String username);
 }

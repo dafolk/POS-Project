@@ -10,7 +10,6 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
-import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.logging.Level;
@@ -160,6 +159,40 @@ public class ProductDao {
         }
     }
     
+    public void restockProduct(Product product){
+        try {
+            PreparedStatement st = dao.conn.prepareStatement("UPDATE product "
+                                                            + "SET stock = stock + ?, last_updated = ? "
+                                                            + "WHERE id = ?;");
+            
+            st.setInt(1, product.getStockRestocked());
+            st.setTimestamp(2, CurrentDateTime.get());
+            st.setInt(3 , product.getId());
+            
+            st.executeUpdate();
+            st.close();
+        } catch (SQLException ex) {
+            Logger.getLogger(ProductDao.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }
+    
+    public void reduceStock(Product product){
+        try {
+            PreparedStatement st = dao.conn.prepareStatement("UPDATE product "
+                                                            + "SET stock = stock - ?, last_updated = ? "
+                                                            + "WHERE id = ?;");
+            
+            st.setInt(1, product.getStockPurchased());
+            st.setTimestamp(2, CurrentDateTime.get());
+            st.setInt(3 , product.getId());
+            
+            st.executeUpdate();
+            st.close();
+        } catch (SQLException ex) {
+            Logger.getLogger(ProductDao.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }
+    
     public List<Category> getAllCategories(){
         List<Category> categories = new ArrayList<Category>();
         
@@ -181,12 +214,15 @@ public class ProductDao {
         }
         return categories;
     }
+    
     public String getCategoryName(int categoryId){
         String categoryName = null;
         
         try {
-            Statement st = dao.conn.createStatement();
-            ResultSet result = st.executeQuery("SELECT name FROM category WHERE id='"+categoryId+"';");
+            PreparedStatement st = dao.conn.prepareStatement("SELECT name FROM category WHERE id=?;");
+            st.setInt(1, categoryId);
+            
+            ResultSet result = st.executeQuery();
             
             while(result.next()){
                 categoryName = result.getString("name");
@@ -200,12 +236,15 @@ public class ProductDao {
         
         return categoryName;
     }
+    
     public int getCategoryId(String categoryName){
         int categoryId = 0;
         
         try {
-            Statement st = dao.conn.createStatement();
-            ResultSet result = st.executeQuery("SELECT id FROM category WHERE name='"+categoryName+"';");
+            PreparedStatement st = dao.conn.prepareStatement("SELECT id FROM category WHERE name=?;");
+            st.setString(1, categoryName);
+            
+            ResultSet result = st.executeQuery();
             
             while(result.next()){
                 categoryId = result.getInt("id");
@@ -218,6 +257,7 @@ public class ProductDao {
         }
         return categoryId;
     }
+    
     public List<Supplier> getAllSuppliers(){
         List<Supplier> suppliers = new ArrayList<Supplier>();
         Supplier supplier;
@@ -242,12 +282,15 @@ public class ProductDao {
         }
         return suppliers;
     }
+    
     public String getSupplierName(int supplierId){
         String supplierName = null;
         
         try {
-            Statement st = dao.conn.createStatement();
-            ResultSet result = st.executeQuery("SELECT name FROM supplier WHERE id='"+supplierId+"';");
+            PreparedStatement st = dao.conn.prepareStatement("SELECT name FROM supplier WHERE id=?;");
+            st.setInt(1, supplierId);
+            
+            ResultSet result = st.executeQuery();
             
             while(result.next()){
                 supplierName = result.getString("name");
@@ -261,12 +304,15 @@ public class ProductDao {
         
         return supplierName;
     }
+    
     public int getSupplierId(String supplierName){
         int supplierId = 0;
         
         try {
-            Statement st = dao.conn.createStatement();
-            ResultSet result = st.executeQuery("SELECT id FROM supplier WHERE name='"+supplierName+"';");
+            PreparedStatement st = dao.conn.prepareStatement("SELECT id FROM supplier WHERE name=?;");
+            st.setString(1, supplierName);
+            
+            ResultSet result = st.executeQuery();
             
             while(result.next()){
                 supplierId = result.getInt("id");
@@ -282,7 +328,7 @@ public class ProductDao {
     }
     
     public List<Product> getAllProducts(){
-        List<Product> products = new ArrayList<Product>();
+        List<Product> products = new ArrayList<>();
         Product product;
         
         try {
@@ -314,8 +360,10 @@ public class ProductDao {
         Product product = new Product();
         
         try {
-            Statement st = dao.conn.createStatement();
-            ResultSet result = st.executeQuery("SELECT * FROM product WHERE id='"+productId+"';");
+            PreparedStatement st = dao.conn.prepareStatement("SELECT * FROM product WHERE id=?;");
+            st.setInt(1, productId);
+            
+            ResultSet result = st.executeQuery();
             
             while(result.next()){
                 int id = result.getInt("id");
@@ -346,8 +394,10 @@ public class ProductDao {
         Supplier supplier = new Supplier();
         
         try {
-            Statement st = dao.conn.createStatement();
-            ResultSet result = st.executeQuery("SELECT * FROM supplier WHERE id='"+supplierId+"';");
+            PreparedStatement st = dao.conn.prepareStatement("SELECT * FROM supplier WHERE id=?;");
+            st.setInt(1, supplierId);
+            
+            ResultSet result = st.executeQuery();
             
             while(result.next()){
                 int id = result.getInt("id");
@@ -368,20 +418,65 @@ public class ProductDao {
         return supplier;
     }
     
-    public void restockProduct(Product product){
+    public List<Product> getProductByCategory(int categoryId){
+        List<Product> productByCategory = new ArrayList<>();
+        Product product = new Product();
+        
         try {
-            PreparedStatement st = dao.conn.prepareStatement("UPDATE product "
-                                                            + "SET stock = ?, last_updated = ? "
-                                                            + "WHERE id = ?;");
+            PreparedStatement st = dao.conn.prepareStatement("SELECT * FROM product WHERE category=?;");
+            st.setInt(1, categoryId);
             
-            st.setInt(1, product.getStock());
-            st.setTimestamp(2, CurrentDateTime.get());
-            st.setInt(3 , product.getId());
+            ResultSet result = st.executeQuery();
             
-            st.executeUpdate();
+            while(result.next()){
+                int id = result.getInt("id");
+                String name = result.getString("name");
+                int unitPrice = result.getInt("unit_price");
+                int sellingPrice = result.getInt("selling_price");
+                int category = result.getInt("category");
+                int supplier = result.getInt("supplier");
+                int stock = result.getInt("stock");
+                Date lastUpdated = result.getTimestamp("last_updated");
+                
+                product = new Product(id, name, unitPrice, sellingPrice, category, supplier, stock, lastUpdated);
+                
+                productByCategory.add(product);
+            }
             st.close();
+            result.close();
         } catch (SQLException ex) {
             Logger.getLogger(ProductDao.class.getName()).log(Level.SEVERE, null, ex);
         }
+        return productByCategory;                                            
+    }
+    
+    public List<Product> findProductByName(String searchString){
+        List<Product> products = new ArrayList<>();
+        Product product;
+        try {
+            PreparedStatement st = dao.conn.prepareStatement("SELECT * FROM product WHERE name LIKE ?;");
+            st.setString(1, "%" + searchString + "%");
+            
+            ResultSet result = st.executeQuery();
+            
+            while(result.next()){
+                int id = result.getInt("id");
+                String name = result.getString("name");
+                int unitPrice = result.getInt("unit_price");
+                int sellingPrice = result.getInt("selling_price");
+                int category = result.getInt("category");
+                int supplier = result.getInt("supplier");
+                int stock = result.getInt("stock");
+                Date lastUpdated = result.getTimestamp("last_updated");
+                
+                product = new Product(id, name, unitPrice, sellingPrice, category, supplier, stock, lastUpdated);
+                products.add(product);
+            }
+            st.close();
+            result.close();
+        } catch (SQLException ex) {
+            Logger.getLogger(ProductDao.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return products;
     }
 }
