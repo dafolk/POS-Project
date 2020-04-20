@@ -61,19 +61,4 @@ public class AdminPage extends JFrame {
     public static void disposeAdminPage(){
         adminPage.dispose();
     }
-    
-    public static void main(String[] args) {
-        try {
-            for (javax.swing.UIManager.LookAndFeelInfo info : javax.swing.UIManager.getInstalledLookAndFeels()) {
-                if ("Metal".equals(info.getName())) {
-                    javax.swing.UIManager.setLookAndFeel(info.getClassName());
-                    break;
-                }
-            }
-        } catch (Exception e){
-            e.printStackTrace();
-        }
-        adminPage = new AdminPage();
-        adminPage.setVisible(true);
-    }
 }

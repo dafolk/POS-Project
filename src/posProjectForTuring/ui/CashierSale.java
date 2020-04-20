@@ -6,7 +6,7 @@ import java.util.ArrayList;
 import java.util.List;
 import javax.swing.event.ListSelectionEvent;
 import javax.swing.table.DefaultTableModel;
-import posProjectForTuring.controller.CurrentDateTime;
+import posProjectForTuring.controller.DateTimeUtils;
 import posProjectForTuring.controller.Publisher;
 import posProjectForTuring.controller.Subscriber;
 import posProjectForTuring.model.Category;
@@ -258,9 +258,9 @@ public class CashierSale extends javax.swing.JFrame implements Publisher {
         btnPaymentDone = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        setTitle("Cashier Sale");
         setExtendedState(6);
         setLocation(new java.awt.Point(0, 0));
-        setResizable(false);
 
         tblInventory.setFont(new java.awt.Font("Arial", 0, 18)); // NOI18N
         tblInventory.setModel(new javax.swing.table.DefaultTableModel(
@@ -842,7 +842,7 @@ public class CashierSale extends javax.swing.JFrame implements Publisher {
 
     private void insertTransaction() {
         this.transaction.setCashierId(CashierLoginDialog.cashierId);
-        this.transaction.setDate(CurrentDateTime.get());
+        this.transaction.setDate(DateTimeUtils.getCurrentTime());
         this.transaction.setTotal(this.totalPrice);
         this.transaction.setPayAmount(parseInt(this.txtPayAmount.getText()));
         this.transaction.setChangeAmount(this.changeAmount);
@@ -884,36 +884,6 @@ public class CashierSale extends javax.swing.JFrame implements Publisher {
         this.txtPayAmount.setText("");
         this.lblChange.setText("0 MMK");
         this.btnPaymentDone.setEnabled(false);
-    }
-
-    public static void main(String args[]) {
-        /* Set the Nimbus look and feel */
-        //<editor-fold defaultstate="collapsed" desc=" Look and feel setting code (optional) ">
-        /* If Nimbus (introduced in Java SE 6) is not available, stay with the default look and feel.
-         * For details see http://download.oracle.com/javase/tutorial/uiswing/lookandfeel/plaf.html 
-         */
-        try {
-            for (javax.swing.UIManager.LookAndFeelInfo info : javax.swing.UIManager.getInstalledLookAndFeels()) {
-                if ("Nimbus".equals(info.getName())) {
-                    javax.swing.UIManager.setLookAndFeel(info.getClassName());
-                    break;
-                }
-            }
-        } catch (ClassNotFoundException ex) {
-            java.util.logging.Logger.getLogger(CashierSale.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (InstantiationException ex) {
-            java.util.logging.Logger.getLogger(CashierSale.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (IllegalAccessException ex) {
-            java.util.logging.Logger.getLogger(CashierSale.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (javax.swing.UnsupportedLookAndFeelException ex) {
-            java.util.logging.Logger.getLogger(CashierSale.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        }
-        //</editor-fold>
-
-        /* Create and display the form */
-        java.awt.EventQueue.invokeLater(() -> {
-            new CashierSale().setVisible(true);
-        });
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables

@@ -1,6 +1,6 @@
 package posProjectForTuring.model.service.impl;
 
-import java.sql.Date;
+import java.sql.Timestamp;
 import java.util.List;
 import posProjectForTuring.model.Transaction;
 import posProjectForTuring.model.dao.TransactionDao;
@@ -25,8 +25,8 @@ public class TransactionServiceImpl implements TransactionService{
     }
 
     @Override
-    public List<Transaction> getTransactionByMonth(Date startDate, Date endDate) {
-        return this.transactionDao.getTransactionByMonth(startDate, endDate);
+    public List<Transaction> getTransactionByInterval(Timestamp startDate, Timestamp endDate) {
+        return this.transactionDao.getTransactionByInterval(startDate, endDate);
     }
     
 }

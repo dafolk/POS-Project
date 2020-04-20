@@ -14,7 +14,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import posProjectForTuring.controller.CurrentDateTime;
+import posProjectForTuring.controller.DateTimeUtils;
 import posProjectForTuring.model.Category;
 import posProjectForTuring.model.Product;
 import posProjectForTuring.model.Supplier;
@@ -63,7 +63,7 @@ public class ProductDao {
             st.setInt(4, product.getCategory());
             st.setInt(5, product.getSupplier());
             st.setInt(6, product.getStock());
-            st.setTimestamp(7, CurrentDateTime.get());
+            st.setTimestamp(7, DateTimeUtils.getCurrentTime());
             
             st.executeUpdate();
             st.close();
@@ -83,7 +83,7 @@ public class ProductDao {
             st.setInt(3, product.getSellingPrice());
             st.setInt(4, product.getCategory());
             st.setInt(5, product.getSupplier());
-            st.setTimestamp(6, CurrentDateTime.get());
+            st.setTimestamp(6, DateTimeUtils.getCurrentTime());
             st.setInt(7, product.getId());
             
             st.executeUpdate();
@@ -166,7 +166,7 @@ public class ProductDao {
                                                             + "WHERE id = ?;");
             
             st.setInt(1, product.getStockRestocked());
-            st.setTimestamp(2, CurrentDateTime.get());
+            st.setTimestamp(2, DateTimeUtils.getCurrentTime());
             st.setInt(3 , product.getId());
             
             st.executeUpdate();
@@ -183,7 +183,7 @@ public class ProductDao {
                                                             + "WHERE id = ?;");
             
             st.setInt(1, product.getStockPurchased());
-            st.setTimestamp(2, CurrentDateTime.get());
+            st.setTimestamp(2, DateTimeUtils.getCurrentTime());
             st.setInt(3 , product.getId());
             
             st.executeUpdate();

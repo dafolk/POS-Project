@@ -57,4 +57,31 @@ public class VoucherDao {
         }
         return vouchers;
     }
+    
+    public List<Voucher> getVouchersByTransactionIds(int startId, int endId){
+        List<Voucher> vouchers = new ArrayList<>();
+        Voucher voucher;
+        
+        try{
+            PreparedStatement st = dao.conn.prepareStatement("SELECT * FROM voucher WHERE transaction_id >= ? and transaction_id <=?;");
+            st.setInt(1, startId);
+            st.setInt(2, endId);
+            
+            ResultSet result = st.executeQuery();
+            
+            while(result.next()){
+                int id = result.getInt("id");
+                int transactionId = result.getInt("transaction_id");
+                int productId = result.getInt("product_id");
+                int quantity = result.getInt("quantity");
+                int price = result.getInt("price");
+                
+                voucher = new Voucher(id, transactionId, productId, quantity, price);
+                vouchers.add(voucher);
+            }
+        } catch (SQLException ex) {
+            Logger.getLogger(ProductDao.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return vouchers;
+    }
 }

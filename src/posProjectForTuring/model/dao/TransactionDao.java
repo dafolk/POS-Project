@@ -6,10 +6,11 @@ import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
 import java.sql.Date;
+import java.sql.Timestamp;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import posProjectForTuring.controller.CurrentDateTime;
+import posProjectForTuring.controller.DateTimeUtils;
 import posProjectForTuring.model.Transaction;
 
 /**
@@ -24,7 +25,7 @@ public class TransactionDao {
             PreparedStatement st = dao.conn.prepareStatement("INSERT INTO `transaction`(cashier_id, date, total, pay_amount, change_amount) VALUES(?, ?, ?, ?, ?);");
             
             st.setInt(1, transaction.getCashierId());
-            st.setTimestamp(2, CurrentDateTime.get());
+            st.setTimestamp(2, DateTimeUtils.getCurrentTime());
             st.setInt(3, transaction.getTotal());
             st.setInt(4, transaction.getPayAmount());
             st.setInt(5, transaction.getChangeAmount());
@@ -83,14 +84,14 @@ public class TransactionDao {
         return transaction;
     }
     
-    public List<Transaction> getTransactionByMonth(Date startDate, Date endDate){
+    public List<Transaction> getTransactionByInterval(Timestamp startDate, Timestamp endDate){
         List<Transaction> transactions = new ArrayList<>();
         Transaction transaction;
         
         try {
             PreparedStatement st = dao.conn.prepareStatement("SELECT * FROM `transaction` WHERE date BETWEEN ? AND ?;");
-            st.setDate(1, startDate);
-            st.setDate(2, endDate);
+            st.setTimestamp(1, startDate);
+            st.setTimestamp(2, endDate);
             
             ResultSet result = st.executeQuery();
             

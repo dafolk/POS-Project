@@ -17,5 +17,10 @@ public class VoucherServiceImpl implements VoucherService {
     public List<Voucher> getAllVoucher() {
         return this.voucherDao.getAllVouchers();
     }
+
+    @Override
+    public List<Voucher> getVouchersByTransactionIds(int startId, int endId) {
+        return this.voucherDao.getVouchersByTransactionIds(startId, endId);
+    }
     
 }

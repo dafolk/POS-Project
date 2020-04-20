@@ -15,7 +15,7 @@ import static javax.swing.JOptionPane.WARNING_MESSAGE;
 import static javax.swing.JOptionPane.YES_NO_OPTION;
 import javax.swing.event.ListSelectionEvent;
 import javax.swing.table.DefaultTableModel;
-import posProjectForTuring.controller.CurrentDateTime;
+import posProjectForTuring.controller.DateTimeUtils;
 import posProjectForTuring.controller.Publisher;
 import posProjectForTuring.controller.Subscriber;
 import posProjectForTuring.model.Category;
@@ -1915,7 +1915,7 @@ public class ProductCrud extends javax.swing.JPanel implements Publisher {
         this.product.setCategory(this.categoryService.getCategoryId(this.cmbNewCategory.getSelectedItem().toString()));
         this.product.setSupplier(this.supplierService.getSupplierId(this.cmbNewSupplier.getSelectedItem().toString()));
         this.product.setStock(parseInt(this.txtNewStock.getText()));
-        this.product.setLastUpdated(CurrentDateTime.get());
+        this.product.setLastUpdated(DateTimeUtils.getCurrentTime());
         
         this.removeCrudText(this.pnlNewProduct);
         this.productService.insertProduct(product);
@@ -1948,7 +1948,7 @@ public class ProductCrud extends javax.swing.JPanel implements Publisher {
         this.product.setSellingPrice(parseInt(this.txtSellingPrice.getText()));
         this.product.setCategory(this.categoryService.getCategoryId(this.cmbCategory.getSelectedItem().toString()));
         this.product.setSupplier(this.supplierService.getSupplierId(this.cmbSupplier.getSelectedItem().toString()));
-        this.product.setLastUpdated(CurrentDateTime.get());
+        this.product.setLastUpdated(DateTimeUtils.getCurrentTime());
         
         this.productService.updateProduct(this.product);
         this.removeCrudText(this.pnlEditProduct);
